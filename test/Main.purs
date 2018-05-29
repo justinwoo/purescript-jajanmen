@@ -25,13 +25,13 @@ getEm
   -> Aff Foreign
 getEm db = J.queryDB db queryP
   where
-    queryP = SProxy :: SProxy "select * from mytable where name = $name and count = $count"
+    queryP = SProxy :: SProxy "select name, count from mytable where name = $name and count = $count"
 
 -- -- inferred type:
 getSomethin :: SL.DBConnection -> Aff Foreign
 getSomethin db = J.queryDB db queryP params
   where
-    queryP = SProxy :: SProxy "select * from mytable where name = $name and count = $count"
+    queryP = SProxy :: SProxy "select name, count from mytable where name = $name and count = $count"
     params = { "$name": "asdf", "$count": 4 }
 
 addSomethin :: SL.DBConnection -> { "$name" :: String, "$count" :: Int } -> Aff Foreign
