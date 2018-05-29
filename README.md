@@ -10,7 +10,7 @@ Because jajanmen is delicious, and my other library is called [Chanpon](https://
 
 WIP
 
-```hs
+```purs
 -- -- inferred type:
 getEm
   :: forall a b
