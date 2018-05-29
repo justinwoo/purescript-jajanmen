@@ -15,7 +15,7 @@ import Simple.JSON as JSON
 import Test.Assert as Assert
 import Type.Prelude (SProxy(..))
 
--- -- inferred type:
+-- inferred type:
 getEm
   :: forall a b
    . J.AllowedParamType a
@@ -27,14 +27,21 @@ getEm db = J.queryDB db queryP
   where
     queryP = SProxy :: SProxy "select name, count from mytable where name = $name and count = $count"
 
--- -- inferred type:
+-- inferred type:
 getSomethin :: SL.DBConnection -> Aff Foreign
 getSomethin db = J.queryDB db queryP params
   where
     queryP = SProxy :: SProxy "select name, count from mytable where name = $name and count = $count"
     params = { "$name": "asdf", "$count": 4 }
 
-addSomethin :: SL.DBConnection -> { "$name" :: String, "$count" :: Int } -> Aff Foreign
+-- inferred type:
+addSomethin
+  :: forall a b
+   . J.AllowedParamType a
+  => J.AllowedParamType b
+  => SL.DBConnection
+  -> { "$name" :: a, "$count" :: b }
+  -> Aff Foreign
 addSomethin db params = J.queryDB db queryP params
   where
     queryP = SProxy :: SProxy "insert or replace into mytable (name, count) values ($name, $count)"
