@@ -1,23 +1,17 @@
 module Jajanmen where
 
-import Prelude
-
 import Effect.Aff (Aff)
 import Foreign (Foreign)
 import Prim.Row as Row
-import Prim.RowList as RL
 import Prim.Symbol as Symbol
 import SQLite3 as SQLite3
 import Type.Prelude (class IsSymbol, SProxy, reflectSymbol)
 
 -- | type safe querying using a query symbol with $name params,
--- | where corresponding $name labels are required in the params
 queryDB
-  :: forall query params labels labelsL
+  :: forall query params
    . IsSymbol query
-  => ExtractLabels query labels
-  => RL.RowToList labels labelsL
-  => ValidateParams labelsL params
+  => ExtractLabels query params
   => SQLite3.DBConnection
   -> SProxy query
   -> { | params }
@@ -27,7 +21,7 @@ queryDB db queryP params =
   where
     query = reflectSymbol queryP
 
--- e.g. "select * from whatever where a = ?1 and b = ?10"
+-- e.g. "select * from whatever where a = $a and b = $b" { "$a": 1, "$b": "asdf" }
 class ExtractLabels (query :: Symbol) (labels :: # Type) | query -> labels
 
 instance extractLabels ::
@@ -43,7 +37,8 @@ else instance parseParamExtractLabels ::
   ( Symbol.Cons y ys xs
   , ParseParamName y ys "$" out
   , Symbol.Cons z zs ys
-  , Row.Cons out Void row' row
+  , Row.Cons out ty row' row
+  , AllowedParamType ty
   , ExtractLabelsParse z zs row'
   ) => ExtractLabelsParse "$" xs row
 
@@ -69,16 +64,6 @@ else instance nParseParamName ::
   , Symbol.Append acc x acc'
   , ParseParamName y ys acc' out
   ) => ParseParamName x xs acc out
-
-class ValidateParams (paramsL :: RL.RowList) (labels :: # Type) | paramsL -> labels
-
-instance nilValidateParams :: ValidateParams RL.Nil ()
-
-instance consValidateParams ::
-  ( ValidateParams paramsL row'
-  , Row.Cons name ty row' row
-  , AllowedParamType ty
-  ) => ValidateParams (RL.Cons name Void paramsL) row
 
 class AllowedParamType ty
 instance stringAllowedParamType :: AllowedParamType String
