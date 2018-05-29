@@ -49,7 +49,10 @@ else instance nExtractLabels ::
 
 class ParseParamName (x :: Symbol) (xs :: Symbol) (acc :: Symbol) (out :: Symbol) | x xs -> acc out
 
-instance endRParseParamName ::
+instance endRParenParseParamName ::
+  ParseParamName ")" "" out out
+
+else instance endRParseParamName ::
   ( Symbol.Append acc x out
   ) => ParseParamName x "" acc out
 
@@ -58,6 +61,12 @@ else instance endLParseParamName ::
 
 else instance spaceParseParamName ::
   ParseParamName " " xs out out
+
+else instance commaParseParamName ::
+  ParseParamName "," xs out out
+
+else instance parenParseParamName ::
+  ParseParamName ")" xs out out
 
 else instance nParseParamName ::
   ( Symbol.Cons y ys xs

@@ -12,6 +12,8 @@
     "purescript-node-sqlite3": "^3.1.0"
   },
   "devDependencies": {
-    "purescript-console": "^4.1.0"
+    "purescript-console": "^4.1.0",
+    "purescript-assert": "^4.0.0",
+    "purescript-simple-json": "^4.0.0"
   }
 }
