@@ -1,6 +1,6 @@
 # PureScript-Jajanmen
 
-Cool type-safe Symbol query parameterized helper for [Node-SQLite3](https://github.com/justinwoo/purescript-node-sqlite3). WIP.
+Cool type-safe Symbol query parameterized helper for [Node-SQLite3](https://github.com/justinwoo/purescript-node-sqlite3).
 
 ![](https://i.imgur.com/bYe4UrU.jpg)
 
