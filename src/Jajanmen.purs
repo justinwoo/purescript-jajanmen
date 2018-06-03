@@ -56,9 +56,6 @@ else instance endRParseParamName ::
   ( Symbol.Append acc x out
   ) => ParseParamName x "" acc out
 
-else instance endLParseParamName ::
-  ParseParamName "" xs out out
-
 else instance spaceParseParamName ::
   ParseParamName " " xs out out
 
