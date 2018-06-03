@@ -11,7 +11,7 @@ import Type.Prelude (class IsSymbol, SProxy, reflectSymbol)
 queryDB
   :: forall query params
    . IsSymbol query
-  => ExtractLabels query params
+  => ExtractParams query params
   => SQLite3.DBConnection
   -> SProxy query
   -> { | params }
@@ -22,30 +22,30 @@ queryDB db queryP params =
     query = reflectSymbol queryP
 
 -- e.g. "select * from whatever where a = $a and b = $b" { "$a": 1, "$b": "asdf" }
-class ExtractLabels (query :: Symbol) (labels :: # Type) | query -> labels
+class ExtractParams (query :: Symbol) (params :: # Type) | query -> params
 
-instance extractLabels ::
+instance extractParams ::
   ( Symbol.Cons x xs query
-  , ExtractLabelsParse x xs labels
-  ) => ExtractLabels query labels
+  , ExtractParamsParse x xs params
+  ) => ExtractParams query params
 
-class ExtractLabelsParse (x :: Symbol) (xs :: Symbol) (labels :: # Type) | x xs -> labels
+class ExtractParamsParse (x :: Symbol) (xs :: Symbol) (params :: # Type) | x xs -> params
 
-instance endExtractLabelsParse :: ExtractLabelsParse x "" ()
+instance endExtractParamsParse :: ExtractParamsParse x "" ()
 
-else instance parseParamExtractLabels ::
+else instance parseParamExtractParams ::
   ( Symbol.Cons y ys xs
   , ParseParamName y ys "$" out
   , Symbol.Cons z zs ys
   , Row.Cons out ty row' row
   , AllowedParamType ty
-  , ExtractLabelsParse z zs row'
-  ) => ExtractLabelsParse "$" xs row
+  , ExtractParamsParse z zs row'
+  ) => ExtractParamsParse "$" xs row
 
-else instance nExtractLabels ::
+else instance nExtractParams ::
   ( Symbol.Cons y ys xs
-  , ExtractLabelsParse y ys row
-  ) => ExtractLabelsParse x xs row
+  , ExtractParamsParse y ys row
+  ) => ExtractParamsParse x xs row
 
 class ParseParamName (x :: Symbol) (xs :: Symbol) (acc :: Symbol) (out :: Symbol) | x xs -> acc out
 
