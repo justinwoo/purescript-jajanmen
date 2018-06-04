@@ -1,5 +1,10 @@
 {
   "name": "purescript-jajanmen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/justinwoo/purescript-jajanmen.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
