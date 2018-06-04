@@ -6,6 +6,8 @@ Cool type-safe Symbol query parameterized helper for [Node-SQLite3](https://gith
 
 Because jajanmen is delicious, and my other library is called [Chanpon](https://github.com/justinwoo/purescript-chanpon).
 
+See the post about this library here: <https://github.com/justinwoo/my-blog-posts#well-typed-parameterized-sqlite-parameters-with-purescript>
+
 ## Usage
 
 First, prepare some queries:
