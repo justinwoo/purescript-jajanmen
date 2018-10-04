@@ -52,6 +52,9 @@ class ParseParamName (x :: Symbol) (xs :: Symbol) (acc :: Symbol) (out :: Symbol
 instance endRParenParseParamName ::
   ParseParamName ")" "" out out
 
+else instance newlineParseParamName ::
+  ParseParamName "\n" "" out out
+
 else instance endRParseParamName ::
   ( Symbol.Append acc x out
   ) => ParseParamName x "" acc out

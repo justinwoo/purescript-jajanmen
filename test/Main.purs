@@ -34,6 +34,13 @@ getSomethin db = J.queryDB db queryP params
     queryP = SProxy :: SProxy "select name, count from mytable where name = $name and count = $count"
     params = { "$name": "asdf", "$count": 4 }
 
+getAnother :: SL.DBConnection -> Aff Foreign
+getAnother db = J.queryDB db queryP params
+  where
+    queryP = SProxy :: SProxy """select name, count from mytable where name = $name and count = $count
+"""
+    params = { "$name": "xyz", "$count": 1 }
+
 -- inferred type:
 addSomethin
   :: forall a b
@@ -55,12 +62,16 @@ main = launchAff_ do
   _ <- SL.queryDB db "delete from mytable" []
   _ <- addSomethin db { "$name": "apples", "$count": 3 }
   _ <- addSomethin db { "$name": "asdf", "$count": 4 }
+  _ <- addSomethin db { "$name": "xyz", "$count": 1 }
 
   f1 <- getEm db { "$name": "apples", "$count": 3 }
   testResult f1 [{ name: "apples", count: 3 }]
 
   f2 <- getSomethin db
   testResult f2 [{ name: "asdf", count: 4 }]
+
+  f3 <- getAnother db
+  testResult f3 [{ name: "xyz", count: 1 }]
 
   log "tests passed"
   where
