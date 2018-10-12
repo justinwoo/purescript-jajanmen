@@ -8,6 +8,8 @@ Because jajanmen is delicious, and my other library is called [Chanpon](https://
 
 See the post about this library here: <https://github.com/justinwoo/my-blog-posts#well-typed-parameterized-sqlite-parameters-with-purescript>
 
+See the talk about this library here: <https://speakerdeck.com/justinwoo/superior-string-spaghetti-with-purescript-jajanmen>
+
 ## Usage
 
 First, prepare some queries:
